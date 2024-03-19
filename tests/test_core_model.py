@@ -11,6 +11,7 @@ from prompt_catalog.core.model import (
     Tag,
     Element,
     ElementChoice,
+    build_prompt,
 )
 
 
@@ -28,7 +29,7 @@ def test():
     brain_storm_prompt = Prompt.new(name="brain_storm", group_id=default_group.id)
     brain_storm_prompt.tags = [creative_tag]
 
-    instruction_element = Element.new(name="instruction")
+    instruction_element = Element.new(name="Instruction")
 
     instruction_element_choice_1 = ElementChoice.new(
         element_id=instruction_element.id,
@@ -43,6 +44,19 @@ def test():
     instruction_element_choice_1.update(body="instruction_choice_1_body_v2")
     instruction_element_choice_2.update(body="instruction_choice_2_body_v2")
 
+    output_guideline_element = Element.new(name="Output Guideline")
+
+    output_guideline_element_choice_1 = ElementChoice.new(
+        element_id=output_guideline_element.id,
+        name="output_guideline_element_choice_1",
+        body="output_guideline_element_choice_1_body",
+    )
+    output_guideline_element_choice_2 = ElementChoice.new(
+        element_id=output_guideline_element.id,
+        name="output_guideline_element_choice_2",
+        body="output_guideline_element_choice_2_body",
+    )
+
     with orm.Session(engine) as ses:
         # --- insert
         ses.add(default_group)
@@ -56,6 +70,10 @@ def test():
         ses.add(instruction_element)
         ses.add(instruction_element_choice_1)
         ses.add(instruction_element_choice_2)
+
+        ses.add(output_guideline_element)
+        ses.add(output_guideline_element_choice_1)
+        ses.add(output_guideline_element_choice_2)
         ses.commit()
 
         # --- select
@@ -74,10 +92,20 @@ def test():
         assert tag.prompts[0].name == "summarize"
 
         element = ses.get(Element, instruction_element.id)
-        assert element.name == "instruction"
+        assert element.name == "Instruction"
         assert len(element.choices) == 2
         choice = element.choices[0]
         assert choice.create_at != choice.update_at
+
+        # utility functions
+        body = build_prompt(
+            element_choices=[
+                instruction_element_choice_1,
+                output_guideline_element_choice_1,
+            ],
+            variables={},
+        )
+        print(body)
 
 
 if __name__ == "__main__":

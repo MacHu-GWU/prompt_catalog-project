@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 
+from ..vendor.iterable import group_by
+
 
 def new_uuid() -> str:
     return str(uuid.uuid4())
@@ -294,3 +296,16 @@ class ElementChoice(Base):
             self.body = body
         self.update_at = get_utc_now()
         return self
+
+
+def build_prompt(
+    parts: T.List[ElementChoice],
+    variables: T.Optional[T.Dict[str, str]],
+) -> str:
+    chunks = list()
+    grouped = group_by(parts, get_key=lambda choice: choice.element.name)
+    for element_name, choices in grouped.items():
+        chunks.append(f"# {element_name}")
+        for choice in choices:
+            chunks.append(choice.body.format(**variables))
+    return "\n\n".join(chunks)
