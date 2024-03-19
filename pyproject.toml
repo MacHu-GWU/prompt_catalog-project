@@ -1,0 +1,113 @@
+# Reference:
+# - The pyproject.toml file: https://python-poetry.org/docs/pyproject/
+# - Dependency specification: https://python-poetry.org/docs/dependency-specification/
+[tool.poetry]
+name = "prompt_catalog"
+version = "0.1.1"
+description = "Video Search."
+authors = ["Sanhe Hu <husanhe@gmail.com>"]
+
+# --- core dependencies for deployment
+[tool.poetry.dependencies]
+python = "3.10.*"
+# path manipulation
+pathlib_mate = " 1.3.2"
+# full text search
+sayt = "0.6.5"
+# addtional standard library
+boltons = "23.1.1"
+# sqlahcmey database
+SQLAlchemy = "2.0.28"
+# Copy to clipboard
+pyperclip = "1.8.2"
+# GUI
+PySide6 = "6.6.2"
+python-dateutil = "2.8.2"
+# opposite of format
+parse = "1.20.*"
+# S3 SDK
+s3pathlib = "2.1.2"
+# boto3 session manager
+boto_session_manager = "1.7.2"
+# versioned artifacts management
+versioned = "0.6.1"
+
+# --- addtitional dependencies for development
+[tool.poetry.group.dev]
+optional = true
+
+
+[tool.poetry.group.dev.dependencies]
+# publish package to PyPI
+twine = "3.8.0"
+# build wheel distribution format
+wheel = "0.37.1"
+# beautiful formatting for console output
+rich = "12.6.0"
+# build CLI app made easy
+fire = "0.5.0"
+
+
+# --- addtitional dependencies for building documentations
+[tool.poetry.group.doc]
+optional = true
+
+
+[tool.poetry.group.doc.dependencies]
+Sphinx = "5.3.0"
+# enable jinja syntax in reStructuredText
+sphinx-jinja = "2.0.2"
+# add copy button to code block
+sphinx-copybutton = "0.5.1"
+# add additional design pattern to sphinx
+sphinx-design = "0.5.0"
+# the sphinx theme
+furo = "2023.03.27"
+# add jupyter notebook in sphinx doc
+nbsphinx = "0.8.12"
+# generate reStructuredText in Python
+rstobj = "1.2.1"
+# syntax highlight
+pygments = "2.15.1"
+# iPython
+ipython = "8.10.0"
+# automaticall generate .. toctree directives and API reference doc
+docfly = "2.0.3"
+# note: for furo-sphinx-search (https://github.com/harshil21/furo-sphinx-search)
+# you have to manually do ``pip install -r requirements-furo-sphinx-search.txt``
+# note: you need to install awscli to upload the documentation website to S3
+# awscli has werid dependency issue, so we install it out side of poetry
+
+
+# --- addtitional dependencies for testing
+[tool.poetry.group.test]
+optional = true
+
+
+[tool.poetry.group.test.dependencies]
+# pytest framework
+pytest = "6.2.5"
+# code coverage test
+pytest-cov = "2.12.1"
+
+
+# --- addtitional dependencies for automation shell scripts
+[tool.poetry.group.auto]
+optional = true
+
+[tool.poetry.group.auto.dependencies]
+# Python dependency management
+poetry = "1.6.1" # this version should match the version in github action yml file
+# parse pyproject.toml file
+tomli = "2.0.1"
+# beautiful formatting for console output
+rich = "12.6.0"
+# build CLI app made easy
+fire = "0.5.0"
+# Python project ops automation
+pyproject_ops = ">=0.1.1,<1.0.0"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
