@@ -11,4 +11,8 @@ from datetime import datetime, timezone
 
 @dataclasses.dataclass
 class Prompt:
-    pass
+    id: str
+    createdTime: datetime
+    Name: str
+    Group: str
+    GroupName
