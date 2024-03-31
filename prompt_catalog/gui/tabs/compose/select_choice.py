@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
+todo: add docstring
 """
 
 import typing as T
@@ -11,34 +12,40 @@ from PySide6 import QtWidgets, QtCore
 from ...utils import api as gui_utils
 from ....fts import element_choice_dataset
 
-if T.TYPE_CHECKING:
+if T.TYPE_CHECKING:  # pragma: no cover
     from .select_element import SelectElementWidget
 
 
 class ChoiceRadioButton(gui_utils.RadioButton):
+    """
+    todo: add docstring
+    """
+
     def __init__(
         self,
         parent,
         display_value: gui_utils.DisplayValue,
+        choice_body: str,
         select_choice_wgt: "SelectChoiceWidget",
     ):
         super().__init__(parent=parent, display_value=display_value)
+        self.choice_body = choice_body
         self.select_choice_wgt = select_choice_wgt
 
+    # fmt: off
     def toggled_event_handler(self):
         print("📣 ChoiceRadioButton.toggled_event_handler")
-        self.select_choice_wgt.search_choice_line_edit_wgt.setText(
-            self.display_value.label
-        )
-        self.select_choice_wgt.search_choice_line_edit_wgt._choice_id = (
-            self.display_value.value
-        )
-        self.select_choice_wgt.search_choice_browser_wgt.setText(
-            self.display_value.value
-        )
+        self.select_choice_wgt.search_choice_line_edit_wgt.setText(self.display_value.label)
+        self.select_choice_wgt.selected_choice_body = self.choice_body
+        self.select_choice_wgt.search_choice_browser_wgt.setText(self.choice_body)
+    # fmt: on
 
 
 class ChoiceGridLayout(QtWidgets.QGridLayout):
+    """
+    todo: add docstring
+    """
+
     def __init__(
         self,
         *args,
@@ -48,6 +55,7 @@ class ChoiceGridLayout(QtWidgets.QGridLayout):
         super().__init__(*args, **kwargs)
         self.item_per_row = item_per_row
         self.radio_wgt_list: list[QtWidgets.QRadioButton] = list()
+        self.radio_group = QtWidgets.QButtonGroup()
 
     def clear_items(self):
         gui_utils.empty_items_from_grid_layout(self)
@@ -65,10 +73,14 @@ class ChoiceGridLayout(QtWidgets.QGridLayout):
             pad_to_full_row=True,
         )
         self.radio_wgt_list.extend(radio_wgt_list)
+        for radio_wgt in radio_wgt_list:
+            self.radio_group.addButton(radio_wgt)
 
 
 class SelectChoiceWidget(QtWidgets.QWidget):
-    """ """
+    """
+    todo: add docstring
+    """
 
     def __init__(
         self,
@@ -77,6 +89,7 @@ class SelectChoiceWidget(QtWidgets.QWidget):
     ):
         super().__init__(parent)
         self.select_element_wgt = select_element_wgt
+        self.selected_choice_body: T.Optional[str] = None
 
         self.set_widget()
         self.set_layout()
@@ -89,8 +102,6 @@ class SelectChoiceWidget(QtWidgets.QWidget):
         self.search_choice_line_edit_wgt.textEdited.connect(
             self.query_changed_event_handler
         )
-        self.search_choice_line_edit_wgt._choice_id = None
-        self.search_choice_line_edit_wgt._choice_body = None
 
         self.search_choice_browser_wgt = QtWidgets.QTextBrowser()
 
@@ -101,8 +112,15 @@ class SelectChoiceWidget(QtWidgets.QWidget):
         if not query:
             query = "*"
         query = element_choice_dataset._parse_query(query)
-        element_id = self.select_element_wgt.search_element_line_edit_wgt._element_id
-        query = And([query, Term("Element", element_id)])
+        query = And(
+            [
+                query,
+                Term(
+                    fieldname="Element",
+                    text=self.select_element_wgt.selected_element_id,
+                ),
+            ]
+        )
         res = element_choice_dataset.search(
             query,
             limit=10,
@@ -110,11 +128,12 @@ class SelectChoiceWidget(QtWidgets.QWidget):
         # print(res) # for debug only
         radio_wgt_list = list()
         for doc in res:
-            label = doc["Name"]
-            value = doc["Body"]
+            choice_name = doc["Name"]
+            choice_body = doc["Body"]
             radio_wgt = ChoiceRadioButton(
                 parent=self,
-                display_value=gui_utils.DisplayValue(label, value),
+                display_value=gui_utils.DisplayValue(choice_name, ""),
+                choice_body=choice_body,
                 select_choice_wgt=self,
             )
             radio_wgt_list.append(radio_wgt)
