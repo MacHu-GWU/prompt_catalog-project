@@ -14,6 +14,8 @@ from ....fts import element_choice_dataset
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from .select_element import SelectElementWidget
+    from .one_element import OneElementScrollAreaContentWidget
+    from .main import ComposeScrollAreaContentWidget
 
 
 class ChoiceRadioButton(gui_utils.RadioButton):
@@ -38,6 +40,11 @@ class ChoiceRadioButton(gui_utils.RadioButton):
         self.select_choice_wgt.search_choice_line_edit_wgt.setText(self.display_value.label)
         self.select_choice_wgt.selected_choice_body = self.choice_body
         self.select_choice_wgt.search_choice_browser_wgt.setText(self.choice_body)
+
+        one_element_scroll_area_content_wgt: "OneElementScrollAreaContentWidget" = self.select_choice_wgt.parent()
+        compose_scroll_area_content_wgt: "ComposeScrollAreaContentWidget" = one_element_scroll_area_content_wgt.compose_scroll_area_content_wgt
+        prompt = compose_scroll_area_content_wgt.generate_prompt()
+        compose_scroll_area_content_wgt.prompt_wgt.setText(prompt)
     # fmt: on
 
 
