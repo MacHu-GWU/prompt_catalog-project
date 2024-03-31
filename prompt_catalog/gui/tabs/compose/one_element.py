@@ -5,46 +5,45 @@
 
 from PySide6 import QtWidgets, QtCore
 
+from .select_element import SelectElementWidget
+from .select_choice import SelectChoiceWidget
+
 
 class OneElementScrollAreaContentWidget(QtWidgets.QWidget):
-    """
-    """
+    """ """
 
-    def __init__(self, parent):
+    def __init__(
+        self,
+        parent,
+        ith: int,
+    ):
         super().__init__(parent)
+        self.ith = ith
+
         # widget
-        # self.all_field_input_scroll_area_wgt = AllFieldInputScrollAreaWidget(self)
-        # self.fts_scroll_area_wgt = FtsScrollAreaWidget(
-        #     self,
-        #     all_field_input_scroll_area_content_wgt=self.all_field_input_scroll_area_wgt.main_wgt,
-        # )
-        # self.all_tag_group_scroll_area_wgt = AllTagGroupScrollAreaWidget(
-        #     self,
-        #     tag_input_line_edit_wgt=self.all_field_input_scroll_area_wgt.main_wgt.tags_input_box_wgt.line_edit_wgt,
-        # )
-
+        self.select_element_wgt = SelectElementWidget(self, ith=self.ith, select_choice_wgt=None)
+        self.select_choice_wgt = SelectChoiceWidget(
+            self,
+            select_element_wgt=self.select_element_wgt,
+        )
+        self.select_element_wgt.select_choice_wgt = self.select_choice_wgt
         # layout
-        self.main_lay = QtWidgets.QHBoxLayout()
-
-        # self.left_column_lay = QtWidgets.QVBoxLayout()
-        # self.left_column_lay.addWidget(self.all_field_input_scroll_area_wgt)
-        # self.left_column_lay.addWidget(self.fts_scroll_area_wgt)
-        #
-        # self.right_column_lay = QtWidgets.QVBoxLayout()
-        # self.right_column_lay.addWidget(self.all_tag_group_scroll_area_wgt)
-        #
-        # self.main_lay.addLayout(self.left_column_lay)
-        # self.main_lay.addLayout(self.right_column_lay)
+        self.main_lay = QtWidgets.QVBoxLayout()
+        self.main_lay.addLayout(self.select_element_wgt.main_lay)
+        self.main_lay.addLayout(self.select_choice_wgt.main_lay)
 
         self.setLayout(self.main_lay)
 
 
 class OneElementScrollAreaWidget(QtWidgets.QScrollArea):
-    """
-    """
+    """ """
 
-    def __init__(self, parent):
+    def __init__(
+        self,
+        parent,
+        ith: int,
+    ):
         super().__init__(parent)
         self.setWidgetResizable(True)
-        self.main_wgt = OneElementScrollAreaContentWidget(self)
+        self.main_wgt = OneElementScrollAreaContentWidget(self, ith=ith)
         self.setWidget(self.main_wgt)

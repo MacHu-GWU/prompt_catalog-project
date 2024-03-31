@@ -6,21 +6,21 @@
 from PySide6 import QtWidgets, QtCore
 
 from .one_element import OneElementScrollAreaWidget
+
 # from .field_input_scroll_area import AllFieldInputScrollAreaWidget
 # from .fts_scroll_area import FtsScrollAreaWidget
 # from .tag_group_scroll_area import AllTagGroupScrollAreaWidget
 
 
 class ComposeScrollAreaContentWidget(QtWidgets.QWidget):
-    """
-    """
+    """ """
 
     def __init__(self, parent):
         super().__init__(parent)
         # widget
         self.one_element_scroll_area_wgt_list = list()
-        for _ in range(3):
-            one_element_scroll_area_wgt = OneElementScrollAreaWidget(self)
+        for ith in range(1, 1 + 3):
+            one_element_scroll_area_wgt = OneElementScrollAreaWidget(self, ith=ith)
             self.one_element_scroll_area_wgt_list.append(one_element_scroll_area_wgt)
 
         # layout

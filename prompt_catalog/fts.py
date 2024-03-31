@@ -10,7 +10,6 @@ from .cache import cache
 from .paths import (
     path_airtable_data,
     dir_index,
-    dir_cache,
 )
 
 
