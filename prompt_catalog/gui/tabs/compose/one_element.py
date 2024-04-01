@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+
 """
+todo: add docstring
 """
 
 import typing as T
@@ -15,7 +17,9 @@ if T.TYPE_CHECKING:
 
 
 class OneElementScrollAreaContentWidget(QtWidgets.QWidget):
-    """ """
+    """
+    todo: add docstring
+    """
 
     def __init__(
         self,
@@ -48,7 +52,9 @@ class OneElementScrollAreaContentWidget(QtWidgets.QWidget):
 
 
 class OneElementScrollAreaWidget(QtWidgets.QScrollArea):
-    """ """
+    """
+    todo: add docstring
+    """
 
     def __init__(
         self,

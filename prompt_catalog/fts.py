@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Provide full text search capability for the application.
+"""
+
 import typing as T
 import json
 import dataclasses
@@ -36,6 +40,9 @@ class AirTableData:
 
 
 def load_data():
+    """
+    Load data from the Airtable JSON file.
+    """
     data = json.loads(path_airtable_data.read_text())
     element_list = [
         Element(
@@ -50,7 +57,7 @@ def load_data():
             id=id,
             createdTime=dct["createdTime"],
             Name=dct["fields"]["Name"],
-            Body=dct["fields"]["Body"],
+            Body=dct["fields"].get("Body"),
             Element=dct["fields"]["Element"][0],
         )
         for id, dct in data["Element Choice"].items()

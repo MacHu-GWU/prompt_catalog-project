@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
+todo: add docstring
 """
 
 from PySide6 import QtWidgets, QtCore
 
 from .one_element import OneElementScrollAreaWidget
 
-# from .field_input_scroll_area import AllFieldInputScrollAreaWidget
-# from .fts_scroll_area import FtsScrollAreaWidget
-# from .tag_group_scroll_area import AllTagGroupScrollAreaWidget
-
 
 class ComposeScrollAreaContentWidget(QtWidgets.QWidget):
-    """ """
+    """
+    todo: add docstring
+    """
 
     def __init__(self, parent):
         super().__init__(parent)

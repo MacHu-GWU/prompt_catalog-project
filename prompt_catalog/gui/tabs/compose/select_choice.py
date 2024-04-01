@@ -41,6 +41,7 @@ class ChoiceRadioButton(gui_utils.RadioButton):
         self.select_choice_wgt.selected_choice_body = self.choice_body
         self.select_choice_wgt.search_choice_browser_wgt.setText(self.choice_body)
 
+        # 更新最终的 prompt
         one_element_scroll_area_content_wgt: "OneElementScrollAreaContentWidget" = self.select_choice_wgt.parent()
         compose_scroll_area_content_wgt: "ComposeScrollAreaContentWidget" = one_element_scroll_area_content_wgt.compose_scroll_area_content_wgt
         prompt = compose_scroll_area_content_wgt.generate_prompt()
@@ -115,6 +116,7 @@ class SelectChoiceWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def query_changed_event_handler(self):
         print("📣 SelectChoiceWidget.query_changed_event_handler")
+        # 根据输入的内容，搜索 element choice
         query = self.search_choice_line_edit_wgt.text()
         if not query:
             query = "*"
@@ -133,6 +135,7 @@ class SelectChoiceWidget(QtWidgets.QWidget):
             limit=10,
         )
         # print(res) # for debug only
+        # 把搜索到的 Element choice 显示在界面上
         radio_wgt_list = list()
         for doc in res:
             choice_name = doc["Name"]

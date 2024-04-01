@@ -36,10 +36,11 @@ class ElementRadioButton(gui_utils.RadioButton):
     # fmt: off
     def toggled_event_handler(self):
         print("📣 ElementRadioButton.toggled_event_handler")
+        # 更新 line edit 中的内容
         self.select_element_wgt.search_element_line_edit_wgt.setText(self.display_value.label)
         self.select_element_wgt.selected_element_id = self.element_id
         self.select_element_wgt.selected_element_name = self.element_name
-        # refresh select choice widget
+        # 如果这个 radio 改变了, search choice results 也要跟着变
         self.select_element_wgt.select_choice_wgt.query_changed_event_handler()
         self.select_element_wgt.select_choice_wgt.search_choice_line_edit_wgt.setText("")
         self.select_element_wgt.select_choice_wgt.search_choice_browser_wgt.setText("")
@@ -118,6 +119,7 @@ class SelectElementWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def query_changed_event_handler(self):
         print("📣 SelectElementWidget.query_changed_event_handler")
+        # 根据输入的内容，搜索 element
         query = self.search_element_line_edit_wgt.text()
         if not query:
             query = "*"
@@ -126,6 +128,7 @@ class SelectElementWidget(QtWidgets.QWidget):
             limit=10,
         )
         # print(res) # for debug only
+        # 把搜索到的 Element 显示在界面上
         radio_wgt_list = list()
         for doc in res:
             element_id = doc["id"]
