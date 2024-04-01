@@ -54,6 +54,8 @@ The `prompt_catalog` project is a personal project aimed at managing my inventor
 
 While this project serves my individual needs, its design principles can be adapted for enterprise-level applications. For instance, a relational database management system could replace Airtable, and a web-based application could function as a prompt integrated development environment (IDE).
 
+Airtable Base: https://airtable.com/app6Ny0rzgQJRk0T3/tbli1ku6zax6ftfzc/viwv4QtmB1bdZhkoQ?blocks=hide
+
 Prompt IDE:
 
 .. image:: ./docs/source/prompt-catalog-gui-compose-tab.png
